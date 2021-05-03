@@ -110,19 +110,19 @@ struct MangaSummaryRow: View {
                     }
                 }
                 HStack(alignment: .bottom) {
-                    if isTokenMatched {
-                        Text(category)
-                            .fontWeight(.bold)
-                            .lineLimit(1)
-                            .font(.footnote)
-                            .foregroundColor(.white)
-                            .padding(.vertical, 1)
-                            .padding(.horizontal, 3)
-                            .background(
-                                RoundedRectangle(cornerRadius: 2)
-                                    .foregroundColor(manga.color)
-                            )
-                    }
+//                    if isTokenMatched {
+//                        Text(category)
+//                            .fontWeight(.bold)
+//                            .lineLimit(1)
+//                            .font(.footnote)
+//                            .foregroundColor(.white)
+//                            .padding(.vertical, 1)
+//                            .padding(.horizontal, 3)
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 2)
+//                                    .foregroundColor(manga.color)
+//                            )
+//                    }
                     Spacer()
                     Text(manga.publishedTime)
                         .lineLimit(1)

@@ -46,11 +46,11 @@ struct AppearanceSettingView: View {
                     Button("App Icon", action: onAppIconButtonTap)
                         .foregroundColor(.primary)
                         .withArrow()
-                    if isTokenMatched, Locale.current.languageCode != "en" {
-                        Toggle(isOn: settingBinding.translateCategory, label: {
-                            Text("Translate category")
-                        })
-                    }
+//                    if isTokenMatched, Locale.current.languageCode != "en" {
+//                        Toggle(isOn: settingBinding.translateCategory, label: {
+//                            Text("Translate category")
+//                        })
+//                    }
                 }
                 Section(header: Text("List")) {
                     Toggle(isOn: settingBinding.showSummaryRowTags) {

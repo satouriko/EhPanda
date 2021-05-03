@@ -78,18 +78,18 @@ struct AccountSettingView: View {
     var body: some View {
         ZStack {
             Form {
-                if let settingBinding = settingBinding {
+                if let _ = settingBinding {
                     Section {
-                        Picker(
-                            selection: settingBinding.galleryType,
-                            label: Text("Gallery"),
-                            content: {
-                                let galleryTypes: [GalleryType] = [.ehentai, .exhentai]
-                                ForEach(galleryTypes, id: \.self) {
-                                    Text($0.rawValue.localized())
-                                }
-                            })
-                            .pickerStyle(SegmentedPickerStyle())
+//                        Picker(
+//                            selection: settingBinding.galleryType,
+//                            label: Text("Gallery"),
+//                            content: {
+//                                let galleryTypes: [GalleryType] = [.ehentai, .exhentai]
+//                                ForEach(galleryTypes, id: \.self) {
+//                                    Text($0.rawValue.localized())
+//                                }
+//                            })
+//                            .pickerStyle(SegmentedPickerStyle())
                         if !didLogin {
                             Button("Login", action: onLoginTap)
                                 .withArrow()
@@ -108,7 +108,7 @@ struct AccountSettingView: View {
                         }
                     }
                 }
-                Section(header: Text("E-Hentai")) {
+                Section {
                     CookieRow(
                         inEditMode: $inEditMode,
                         key: memberIDKey,
@@ -125,30 +125,30 @@ struct AccountSettingView: View {
                     )
                     Button("Copy cookies", action: copyEhCookies)
                 }
-                Section(header: Text("ExHentai")) {
-                    CookieRow(
-                        inEditMode: $inEditMode,
-                        key: igneousKey,
-                        value: igneous,
-                        verifyView: verifyView(igneous),
-                        editChangedAction: onIgneousEditingChanged
-                    )
-                    CookieRow(
-                        inEditMode: $inEditMode,
-                        key: memberIDKey,
-                        value: exMemberID,
-                        verifyView: verifyView(exMemberID),
-                        editChangedAction: onExMemberIDEditingChanged
-                    )
-                    CookieRow(
-                        inEditMode: $inEditMode,
-                        key: passHashKey,
-                        value: exPassHash,
-                        verifyView: verifyView(exPassHash),
-                        editChangedAction: onExPassHashEditingChanged
-                    )
-                    Button("Copy cookies", action: copyExCookies)
-                }
+//                Section(header: Text("ExHentai")) {
+//                    CookieRow(
+//                        inEditMode: $inEditMode,
+//                        key: igneousKey,
+//                        value: igneous,
+//                        verifyView: verifyView(igneous),
+//                        editChangedAction: onIgneousEditingChanged
+//                    )
+//                    CookieRow(
+//                        inEditMode: $inEditMode,
+//                        key: memberIDKey,
+//                        value: exMemberID,
+//                        verifyView: verifyView(exMemberID),
+//                        editChangedAction: onExMemberIDEditingChanged
+//                    )
+//                    CookieRow(
+//                        inEditMode: $inEditMode,
+//                        key: passHashKey,
+//                        value: exPassHash,
+//                        verifyView: verifyView(exPassHash),
+//                        editChangedAction: onExPassHashEditingChanged
+//                    )
+//                    Button("Copy cookies", action: copyExCookies)
+//                }
             }
             TTProgressHUD($hudVisible, config: hudConfig)
         }

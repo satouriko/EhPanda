@@ -146,7 +146,9 @@ class Store: ObservableObject {
             switch result {
             case .success(let manga):
                 appState.cachedList.cache(mangas: [manga])
-                appState.environment.mangaItemReverseID = manga.gid
+                if manga.category == .nonH {
+                    appState.environment.mangaItemReverseID = manga.gid
+                }
             case .failure(let error):
                 appState.environment.mangaItemReverseLoadFailed = true
                 print(error)

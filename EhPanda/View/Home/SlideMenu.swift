@@ -51,7 +51,7 @@ struct SlideMenu: View {
         colorScheme == .light ? .white : .black
     }
     var tokenMatchedMenuItems = HomeListType
-        .allCases.filter({ $0 != .search })
+        .allCases.filter({ $0 != .search && $0 != .downloaded })
     var menuItems: [HomeListType] {
         if isTokenMatched {
             return tokenMatchedMenuItems

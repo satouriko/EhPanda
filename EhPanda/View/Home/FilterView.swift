@@ -33,15 +33,15 @@ struct FilterView: View {
             if let filter = settings.filter,
                let filterBinding = Binding(settingsBinding.filter) {
                 Form {
-                    Section(header: Text("Basic")) {
-                        CategoryView()
-                        Button(action: onResetButtonTap) {
-                            Text("Reset filters")
-                                .foregroundColor(.red)
-                        }
-                        Toggle("Advanced settings", isOn: filterBinding.advanced)
-                    }
-                    if filter.advanced {
+//                    Section(header: Text("Basic")) {
+//                        CategoryView()
+//                        Button(action: onResetButtonTap) {
+//                            Text("Reset filters")
+//                                .foregroundColor(.red)
+//                        }
+//                        Toggle("Advanced settings", isOn: filterBinding.advanced)
+//                    }
+//                    if filter.advanced {
                         Section(header: Text("Advanced")) {
                             Toggle("Search gallery name", isOn: filterBinding.galleryName)
                             Toggle("Search gallery tags", isOn: filterBinding.galleryTags)
@@ -70,7 +70,7 @@ struct FilterView: View {
                             Toggle("Disable uploader filter", isOn: filterBinding.disableUploader)
                             Toggle("Disable tags filter", isOn: filterBinding.disableTags)
                         }
-                    }
+//                    }
                 }
                 .actionSheet(item: environmentBinding.filterViewActionSheetState) { item in
                     switch item {

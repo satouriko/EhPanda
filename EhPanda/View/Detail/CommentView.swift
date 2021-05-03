@@ -131,7 +131,9 @@ struct CommentView: View {
         if isValidDetailURL(url: link) && isTokenMatched {
             let gid = link.pathComponents[2]
             if cachedList.hasCached(gid: gid) {
-                replaceMangaCommentJumpID(gid: gid)
+                if cachedList.items?[gid]?.category == .nonH {
+                    replaceMangaCommentJumpID(gid: gid)
+                }
             } else {
                 fetchMangaWithDetailURL(link.absoluteString)
                 showHUD()

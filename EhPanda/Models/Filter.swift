@@ -19,7 +19,7 @@ struct Filter: Codable {
     var asianPorn = AssociatedCategory(category: .asianPorn, isFiltered: false)
     var misc = AssociatedCategory(category: .misc, isFiltered: false)
 
-    var advanced = false
+    var advanced = true
     var galleryName = true
     var galleryTags = true
     var galleryDesc = false

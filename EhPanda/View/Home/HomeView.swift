@@ -321,7 +321,9 @@ struct HomeView: View {
             {
                 let gid = link.pathComponents[2]
                 if cachedList.hasCached(gid: gid) {
-                    replaceMangaCommentJumpID(gid: gid)
+                    if cachedList.items?[gid]?.category == .nonH {
+                        replaceMangaCommentJumpID(gid: gid)
+                    }
                 } else {
                     fetchMangaWithDetailURL(link.absoluteString)
                     showHUD()

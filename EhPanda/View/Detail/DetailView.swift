@@ -363,19 +363,19 @@ private struct HeaderView: View {
                 }
                 Spacer()
                 HStack {
-                    if isTokenMatched {
-                        Text(category)
-                            .fontWeight(.bold)
-                            .lineLimit(1)
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding(.vertical, 2)
-                            .padding(.horizontal, 4)
-                            .background(
-                                RoundedRectangle(cornerRadius: 3)
-                                    .foregroundColor(manga.color)
-                            )
-                    }
+//                    if isTokenMatched {
+//                        Text(category)
+//                            .fontWeight(.bold)
+//                            .lineLimit(1)
+//                            .font(.headline)
+//                            .foregroundColor(.white)
+//                            .padding(.vertical, 2)
+//                            .padding(.horizontal, 4)
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 3)
+//                                    .foregroundColor(manga.color)
+//                            )
+//                    }
                     Spacer()
                     if isTokenMatched {
                         if isFavored {

@@ -155,11 +155,7 @@ extension Defaults.URL {
         merge([host, listCompact, page + pageNum, from + lastID])
     }
     static func popularList() -> String {
-        if isTokenMatched {
-            return merge([host + popular, listCompact])
-        } else {
-            return merge([ehentai, listCompact, nonh, fSearch + "parody:gintama$"])
-        }
+        "https://e-hentai.org/?f_search=%22multi-work+series%24%22+comic"
     }
     static func watchedList() -> String {
         merge([host + watched, listCompact])
