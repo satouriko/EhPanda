@@ -8,51 +8,28 @@
 import SwiftUI
 import TTProgressHUD
 
-struct ArchiveView: View {
+struct ArchiveView: View, StoreAccessor {
     @EnvironmentObject var store: Store
-    @State var selection: ArchiveRes?
+    @State private var selection: ArchiveRes?
 
-    @State var hudVisible = false
-    @State var hudConfig = TTProgressHUDConfig(
+    @State private var hudVisible = false
+    @State private var hudConfig = TTProgressHUDConfig(
         hapticsEnabled: false
     )
-    var loadingHUDConfig = TTProgressHUDConfig(
+    private var loadingHUDConfig = TTProgressHUDConfig(
         type: .loading,
         title: "Communicating...".localized(),
         hapticsEnabled: false
     )
-
-    let gid: String
-    var cachedList: AppState.CachedList {
-        store.appState.cachedList
-    }
-    var detailInfo: AppState.DetailInfo {
-        store.appState.detailInfo
-    }
-    var detailInfoBinding: Binding<AppState.DetailInfo> {
-        $store.appState.detailInfo
-    }
-    var user: User? {
-        store.appState.settings.user
-    }
-    var mangaDetail: MangaDetail? {
-        cachedList.items?[gid]?.detail
-    }
-    var archive: MangaArchive? {
-        mangaDetail?.archive
-    }
-    var currentGP: String? {
-        user?.currentGP
-    }
-    var currentCredits: String? {
-        user?.currentCredits
-    }
-    var hathArchives: [MangaArchive.HathArchive] {
-        archive?.hathArchives ?? []
-    }
-    let gridItems = [
+    private let gridItems = [
         GridItem(.adaptive(minimum: 150, maximum: 200))
     ]
+
+    private let gid: String
+
+    init(gid: String) {
+        self.gid = gid
+    }
 
     // MARK: ArchiveView
     var body: some View {
@@ -77,8 +54,7 @@ struct ArchiveView: View {
 
                             Spacer()
 
-                            if isSameAccount,
-                               let galleryPoints = currentGP,
+                            if let galleryPoints = currentGP,
                                let credits = currentCredits
                             {
                                 BalanceView(galleryPoints: galleryPoints, credits: credits)
@@ -102,7 +78,6 @@ struct ArchiveView: View {
                 }
             }
             .navigationBarTitle("Archive")
-            .onAppear(perform: onAppear)
             .onChange(
                 of: detailInfo.downloadCommandSending,
                 perform: onRespChange
@@ -112,6 +87,22 @@ struct ArchiveView: View {
                 perform: onHUDVisibilityChange
             )
         }
+        .onAppear(perform: onAppear)
+    }
+}
+
+private extension ArchiveView {
+    var detailInfoBinding: Binding<AppState.DetailInfo> {
+        $store.appState.detailInfo
+    }
+    var mangaDetail: MangaDetail? {
+        cachedList.items?[gid]?.detail
+    }
+    var archive: MangaArchive? {
+        mangaDetail?.archive
+    }
+    var hathArchives: [MangaArchive.HathArchive] {
+        archive?.hathArchives ?? []
     }
 
     func onAppear() {
@@ -169,9 +160,7 @@ struct ArchiveView: View {
 
     func fetchMangaArchive() {
         store.dispatch(.fetchMangaArchive(gid: gid))
-        if currentGP == nil
-            || currentCredits == nil
-        {
+        if currentGP == nil || currentCredits == nil, isSameAccount {
             store.dispatch(.fetchMangaArchiveFunds(gid: gid))
         }
     }
@@ -179,24 +168,24 @@ struct ArchiveView: View {
 
 // MARK: ArchiveGrid
 private struct ArchiveGrid: View {
-    var isSelected: Bool
-    let archive: MangaArchive.HathArchive
+    private var isSelected: Bool
+    private let archive: MangaArchive.HathArchive
 
-    var disabled: Bool {
+    private var disabled: Bool {
         archive.fileSize == "N/A"
             || archive.gpPrice == "N/A"
     }
-    var disabledColor: Color {
-        Color.gray.opacity(0.5)
+    private var disabledColor: Color {
+        .gray.opacity(0.5)
     }
-    var fileSizeColor: Color {
+    private var fileSizeColor: Color {
         if disabled {
             return disabledColor
         } else {
             return .gray
         }
     }
-    var borderColor: Color {
+    private var borderColor: Color {
         if disabled {
             return disabledColor
         } else {
@@ -205,8 +194,13 @@ private struct ArchiveGrid: View {
                 : .gray
         }
     }
-    var environmentColor: Color? {
+    private var environmentColor: Color? {
         disabled ? disabledColor : nil
+    }
+
+    init(isSelected: Bool, archive: MangaArchive.HathArchive) {
+        self.isSelected = isSelected
+        self.archive = archive
     }
 
     var body: some View {
@@ -236,8 +230,13 @@ private struct ArchiveGrid: View {
 
 // MARK: BalanceView
 private struct BalanceView: View {
-    let galleryPoints: String
-    let credits: String
+    private let galleryPoints: String
+    private let credits: String
+
+    init(galleryPoints: String, credits: String) {
+        self.galleryPoints = galleryPoints
+        self.credits = credits
+    }
 
     var body: some View {
         HStack(spacing: 15) {
@@ -257,43 +256,17 @@ private struct BalanceView: View {
 
 // MARK: DownloadButton
 private struct DownloadButton: View {
-    @State var isPressed = false
+    @State private var isPressed = false
 
-    var isDisabled: Bool
-    var action: () -> Void
+    private var isDisabled: Bool
+    private var action: () -> Void
 
-    var textColor: Color {
-        if isDisabled {
-            return Color.white.opacity(0.5)
-        } else {
-            return isPressed
-                ? Color.white.opacity(0.5)
-                : .white
-        }
-    }
-    var backgroundColor: Color {
-        if isDisabled {
-            return Color.accentColor.opacity(0.5)
-        } else {
-            return isPressed
-                ? Color.accentColor.opacity(0.5)
-                : .accentColor
-        }
-    }
-    var paddingInsets: EdgeInsets {
-        isPadWidth
-            ? .init(
-                top: 0,
-                leading: 0,
-                bottom: 30,
-                trailing: 0
-            )
-            : .init(
-                top: 0,
-                leading: 10,
-                bottom: 30,
-                trailing: 10
-            )
+    init(
+        isDisabled: Bool,
+        action: @escaping () -> Void
+    ) {
+        self.isDisabled = isDisabled
+        self.action = action
     }
 
     var body: some View {
@@ -317,6 +290,42 @@ private struct DownloadButton: View {
             perform: {}
         )
     }
+}
+
+private extension DownloadButton {
+    var textColor: Color {
+        if isDisabled {
+            return .white.opacity(0.5)
+        } else {
+            return isPressed
+                ? .white.opacity(0.5)
+                : .white
+        }
+    }
+    var backgroundColor: Color {
+        if isDisabled {
+            return .accentColor.opacity(0.5)
+        } else {
+            return isPressed
+                ? .accentColor.opacity(0.5)
+                : .accentColor
+        }
+    }
+    var paddingInsets: EdgeInsets {
+        isPadWidth
+            ? .init(
+                top: 0,
+                leading: 0,
+                bottom: 30,
+                trailing: 0
+            )
+            : .init(
+                top: 0,
+                leading: 10,
+                bottom: 30,
+                trailing: 10
+            )
+    }
 
     func onTap() {
         if !isDisabled {
@@ -325,5 +334,33 @@ private struct DownloadButton: View {
     }
     func onLongPressing(_ isPressed: Bool) {
         self.isPressed = isPressed
+    }
+}
+
+struct ArchiveView_Previews: PreviewProvider {
+    static var previews: some View {
+        let store = Store()
+        var user = User.empty
+        var manga = Manga.empty
+        let hathArchives = ArchiveRes.allCases.map {
+            MangaArchive.HathArchive(
+                resolution: $0,
+                fileSize: "114 MB",
+                gpPrice: "514 GP"
+            )
+        }
+        let archive = MangaArchive(
+            hathArchives: hathArchives
+        )
+
+        user.currentGP = "114"
+        user.currentCredits = "514"
+        manga.detail?.archive = archive
+        store.appState.settings.user = user
+        store.appState.environment.isPreview = true
+        store.appState.cachedList.items?["mangaForTest"] = manga
+
+        return ArchiveView(gid: "mangaForTest")
+            .environmentObject(store)
     }
 }

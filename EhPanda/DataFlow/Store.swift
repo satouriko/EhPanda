@@ -8,10 +8,12 @@
 import SwiftUI
 import Combine
 
-class Store: ObservableObject {
+final class Store: ObservableObject {
     @Published var appState = AppState()
 
     func dispatch(_ action: AppAction) {
+        if appState.environment.isPreview { return }
+
         print("[ACTION]: \(action)")
         let result = reduce(state: appState, action: action)
         appState = result.0
@@ -101,6 +103,25 @@ class Store: ObservableObject {
             appState.commentInfo.commentContent = ""
 
         // MARK: Fetch Data
+        case .fetchGreeting:
+            if !didLogin && isTokenMatched { break }
+            if appState.settings.greetingLoading { break }
+            appState.settings.greetingLoading = true
+
+            appCommand = FetchGreetingCommand()
+        case .fetchGreetingDone(let result):
+            appState.settings.greetingLoading = false
+
+            switch result {
+            case .success(let greeting):
+                appState.settings.insertGreeting(greeting: greeting)
+            case .failure(let error):
+                if error == .parseFailed {
+                    appState.settings.insertGreeting(greeting: Greeting())
+                }
+                print(error)
+            }
+
         case .fetchUserInfo(let uid):
             if !didLogin && isTokenMatched { break }
             if appState.settings.userInfoLoading { break }
@@ -211,13 +232,13 @@ class Store: ObservableObject {
                 appState.homeInfo.searchCurrentPageNum = mangas.1.current
                 appState.homeInfo.searchPageNumMaximum = mangas.1.maximum
 
-                let prev = appState.homeInfo.searchItems?.count ?? 0
                 appState.homeInfo.insertSearchItems(mangas: mangas.2)
                 appState.cachedList.cache(mangas: mangas.2)
 
-                let curr = appState.homeInfo.searchItems?.count ?? 0
-                if prev == curr && curr != 0 {
-                    dispatch(.fetchMoreSearchItems(keyword: mangas.0))
+                if mangas.1.current < mangas.1.maximum && mangas.2.isEmpty {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                        self?.dispatch(.fetchMoreSearchItems(keyword: mangas.0))
+                    }
                 }
             case .failure(let error):
                 appState.homeInfo.moreSearchLoadFailed = true
@@ -276,6 +297,12 @@ class Store: ObservableObject {
 
                 appState.homeInfo.insertFrontpageItems(mangas: mangas.1)
                 appState.cachedList.cache(mangas: mangas.1)
+
+                if mangas.0.current < mangas.0.maximum && mangas.1.isEmpty {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                        self?.dispatch(.fetchMoreFrontpageItems)
+                    }
+                }
             case .failure(let error):
                 appState.homeInfo.moreFrontpageLoadFailed = true
                 print(error)
@@ -356,6 +383,12 @@ class Store: ObservableObject {
 
                 appState.homeInfo.insertWatchedItems(mangas: mangas.1)
                 appState.cachedList.cache(mangas: mangas.1)
+
+                if mangas.0.current < mangas.0.maximum && mangas.1.isEmpty {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                        self?.dispatch(.fetchMoreWatchedItems)
+                    }
+                }
             case .failure(let error):
                 appState.homeInfo.moreWatchedLoadFailed = true
                 print(error)
@@ -416,6 +449,12 @@ class Store: ObservableObject {
 
                 appState.homeInfo.insertFavoritesItems(favIndex: carriedValue, mangas: mangas.1)
                 appState.cachedList.cache(mangas: mangas.1)
+
+                if mangas.0.current < mangas.0.maximum && mangas.1.isEmpty {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                        self?.dispatch(.fetchMoreFavoritesItems(index: carriedValue))
+                    }
+                }
             case .failure(let error):
                 appState.homeInfo.moreFavoritesLoading[carriedValue] = true
                 print(error)
@@ -475,8 +514,7 @@ class Store: ObservableObject {
             if appState.detailInfo.mangaArchiveFundsLoading { break }
             appState.detailInfo.mangaArchiveFundsLoading = true
 
-            let detailURL = (appState.cachedList.items?[gid]?.detailURL ?? "")
-                .replacingOccurrences(of: Defaults.URL.exhentai, with: Defaults.URL.ehentai)
+            let detailURL = appState.cachedList.items?[gid]?.detailURL ?? ""
             appCommand = FetchMangaArchiveFundsCommand(detailURL: detailURL)
         case .fetchMangaArchiveFundsDone(let result):
             appState.detailInfo.mangaArchiveFundsLoading = false
@@ -573,16 +611,24 @@ class Store: ObservableObject {
                     items: mangas.3
                 )
                 appState.cachedList.cache(mangas: mangas.3)
+
+                if mangas.2.current < mangas.2.maximum && mangas.3.isEmpty {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                        self?.dispatch(.fetchMoreAssociatedItems(depth: mangas.0, keyword: mangas.1))
+                    }
+                }
             case .failure(let error):
                 appState.detailInfo.moreAssociatedItemsLoadFailed = true
                 print(error)
             }
 
-        case .fetchAlterImages(let gid, let doc):
+        case .fetchAlterImages(let gid):
             if appState.detailInfo.alterImagesLoading { break }
             appState.detailInfo.alterImagesLoading = true
 
-            appCommand = FetchAlterImagesCommand(gid: gid, doc: doc)
+            let alterImagesURL = appState.cachedList.items?[gid]?.detail?.alterImagesURL ?? ""
+            appCommand = FetchAlterImagesCommand(gid: gid, alterImagesURL: alterImagesURL)
+
         case .fetchAlterImagesDone(let result):
             appState.detailInfo.alterImagesLoading = false
 
@@ -705,16 +751,18 @@ class Store: ObservableObject {
             appCommand = SendDownloadCommand(gid: gid, archiveURL: archiveURL, resolution: resolution)
         case .sendDownloadCommandDone(let result):
             appState.detailInfo.downloadCommandSending = false
-            appState.detailInfo.downloadCommandResponse = result
 
             switch result {
             case Defaults.Response.hathClientNotFound,
                  Defaults.Response.hathClientNotOnline,
-                 Defaults.Response.invalidResolution:
+                 Defaults.Response.invalidResolution,
+                 .none:
                 appState.detailInfo.downloadCommandFailed = true
             default:
                 break
             }
+
+            appState.detailInfo.downloadCommandResponse = result
 
         case .rate(let gid, let rating):
             guard let apiuidString = appState.settings.user?.apiuid,

@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct RatingView: View {
-    let rawRating: Float
-    var rating: Float {
-        rawRating.fixedRating()
-    }
+    private let rawRating: Float
 
     init(rating: Float) {
         self.rawRating = rating
@@ -58,7 +55,11 @@ struct RatingView: View {
     }
 }
 
-extension RatingView {
+private extension RatingView {
+    private var rating: Float {
+        rawRating.fixedRating()
+    }
+
     struct FilledStar: View {
         var body: some View {
             Image(systemName: "star.fill")
@@ -72,6 +73,25 @@ extension RatingView {
     struct NotFilledStar: View {
         var body: some View {
             Image(systemName: "star")
+        }
+    }
+}
+
+struct RatingView_Previews: PreviewProvider {
+    static let values: [Float] = {
+        var tmpArray: [Float] = []
+        for value in stride(from: 0.0, through: 5.0, by: 0.5) {
+            tmpArray.append(Float(value))
+        }
+        return tmpArray
+    }()
+
+    static var previews: some View {
+        VStack(spacing: 10) {
+            ForEach(values, id: \.self) {
+                RatingView(rating: $0)
+                    .foregroundColor(.yellow)
+            }
         }
     }
 }

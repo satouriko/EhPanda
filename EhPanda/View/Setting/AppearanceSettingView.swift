@@ -7,14 +7,11 @@
 
 import SwiftUI
 
-struct AppearanceSettingView: View {
+struct AppearanceSettingView: View, StoreAccessor {
     @EnvironmentObject var store: Store
-    @State var isNavigationLinkActive = false
+    @State private var isNavigationLinkActive = false
 
-    var setting: Setting? {
-        store.appState.settings.setting
-    }
-    var settingBinding: Binding<Setting>? {
+    private var settingBinding: Binding<Setting>? {
         Binding($store.appState.settings.setting)
     }
 
@@ -46,7 +43,7 @@ struct AppearanceSettingView: View {
                     Button("App Icon", action: onAppIconButtonTap)
                         .foregroundColor(.primary)
                         .withArrow()
-//                    if isTokenMatched, Locale.current.languageCode != "en" {
+//                    if isTokenMatched || environment.isPreview, Locale.current.languageCode != "en" {
 //                        Toggle(isOn: settingBinding.translateCategory, label: {
 //                            Text("Translate category")
 //                        })
@@ -89,17 +86,17 @@ struct AppearanceSettingView: View {
         }
     }
 
-    func onAppIconButtonTap() {
+    private func onAppIconButtonTap() {
         isNavigationLinkActive.toggle()
     }
 }
 
 // MARK: SelectAppIconView
 private struct SelectAppIconView: View {
-    @EnvironmentObject var store: Store
+    @EnvironmentObject private var store: Store
 
-    let selections = IconType.allCases
-    var selection: IconType {
+    private let selections = IconType.allCases
+    private var selection: IconType {
         store.appState
             .settings.setting?
             .appIconType ?? appIconType
@@ -124,7 +121,7 @@ private struct SelectAppIconView: View {
         .onAppear(perform: setSelection)
     }
 
-    func onAppIconRowTap(_ sel: IconType) {
+    private func onAppIconRowTap(_ sel: IconType) {
         UIApplication.shared.setAlternateIconName(sel.fileName) { error in
             if let error = error {
                 notificFeedback(style: .error)
@@ -134,16 +131,26 @@ private struct SelectAppIconView: View {
         }
     }
 
-    func setSelection() {
+    private func setSelection() {
         store.dispatch(.updateAppIconType(iconType: appIconType))
     }
 }
 
 // MARK: AppIconRow
 private struct AppIconRow: View {
-    let iconName: String
-    let iconDesc: String
-    let isSelected: Bool
+    private let iconName: String
+    private let iconDesc: String
+    private let isSelected: Bool
+
+    init(
+        iconName: String,
+        iconDesc: String,
+        isSelected: Bool
+    ) {
+        self.iconName = iconName
+        self.iconDesc = iconDesc
+        self.isSelected = isSelected
+    }
 
     var body: some View {
         HStack {
@@ -165,8 +172,8 @@ private struct AppIconRow: View {
 }
 
 // MARK: Definition
-public enum IconType: String, Codable, Identifiable, CaseIterable {
-    public var id: Int { hashValue }
+enum IconType: String, Codable, Identifiable, CaseIterable {
+    var id: Int { hashValue }
 
     case normal = "Normal"
     case `default` = "Default"

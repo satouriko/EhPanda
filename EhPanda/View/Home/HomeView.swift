@@ -8,38 +8,98 @@
 import SwiftUI
 import TTProgressHUD
 
-struct HomeView: View {
+struct HomeView: View, StoreAccessor {
     @EnvironmentObject var store: Store
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
 
-    @State var clipboardJumpID: String?
-    @State var isJumpNavActive = false
+    @State private var clipboardJumpID: String?
+    @State private var isJumpNavActive = false
+    @State private var greeting: Greeting?
 
-    @State var hudVisible = false
-    @State var hudConfig = TTProgressHUDConfig(
+    @State private var hudVisible = false
+    @State private var hudConfig = TTProgressHUDConfig(
         hapticsEnabled: false
     )
 
-    var cachedList: AppState.CachedList {
-        store.appState.cachedList
+    // MARK: HomeView
+    var body: some View {
+        NavigationView {
+            ZStack {
+                NavigationLink(
+                    "",
+                    destination: DetailView(
+                        gid: clipboardJumpID ?? "",
+                        depth: 1
+                    ),
+                    isActive: $isJumpNavActive
+                )
+                conditionalList
+                    .onChange(
+                        of: environment.homeListType,
+                        perform: onHomeListTypeChange
+                    )
+                    .onChange(
+                        of: environment.favoritesIndex,
+                        perform: onFavoritesIndexChange
+                    )
+                    .onChange(
+                        of: user?.greeting,
+                        perform: onReceiveGreeting
+                    )
+                    .onAppear(perform: onListAppear)
+                    .navigationBarTitle(navigationBarTitle)
+                    .navigationBarItems(trailing:
+                        navigationBarItem
+                    )
+                TTProgressHUD($hudVisible, config: hudConfig)
+            }
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .sheet(item: environmentBinding.homeViewSheetState) { item in
+            switch item {
+            case .setting:
+                SettingView()
+                    .environmentObject(store)
+                    .accentColor(accentColor)
+                    .preferredColorScheme(colorScheme)
+                    .blur(radius: environment.blurRadius)
+                    .allowsHitTesting(environment.isAppUnlocked)
+            case .filter:
+                FilterView()
+                    .environmentObject(store)
+                    .accentColor(accentColor)
+                    .preferredColorScheme(colorScheme)
+                    .blur(radius: environment.blurRadius)
+                    .allowsHitTesting(environment.isAppUnlocked)
+            case .newDawn:
+                NewDawnView(greeting: greeting)
+                    .preferredColorScheme(colorScheme)
+                    .blur(radius: environment.blurRadius)
+                    .allowsHitTesting(environment.isAppUnlocked)
+            }
+        }
+        .onAppear(perform: onAppear)
+        .onReceive(
+            NotificationCenter.default.publisher(
+                for: UIApplication.didBecomeActiveNotification
+            )
+        ) { _ in
+            onBecomeActive()
+        }
+        .onChange(
+            of: environment.mangaItemReverseID,
+            perform: onJumpIDChange
+        )
+        .onChange(
+            of: environment.mangaItemReverseLoading,
+            perform: onFetchFinish
+        )
     }
-    var homeInfo: AppState.HomeInfo {
-        store.appState.homeInfo
-    }
-    var environment: AppState.Environment {
-        store.appState.environment
-    }
+}
+
+private extension HomeView {
     var environmentBinding: Binding<AppState.Environment> {
         $store.appState.environment
-    }
-    var settings: AppState.Settings {
-        store.appState.settings
-    }
-    var setting: Setting? {
-        settings.setting
-    }
-    var accentColor: Color? {
-        setting?.accentColor
     }
     var historyItems: [Manga] {
         var items = homeInfo.historyItems?
@@ -178,74 +238,9 @@ struct HomeView: View {
         }
     }
 
-    // MARK: HomeView
-    var body: some View {
-        NavigationView {
-            ZStack {
-                NavigationLink(
-                    "",
-                    destination: DetailView(
-                        gid: clipboardJumpID ?? "",
-                        depth: 1
-                    ),
-                    isActive: $isJumpNavActive
-                )
-                conditionalList
-                    .onChange(
-                        of: environment.homeListType,
-                        perform: onHomeListTypeChange
-                    )
-                    .onChange(
-                        of: environment.favoritesIndex,
-                        perform: onFavoritesIndexChange
-                    )
-                    .onAppear(perform: onListAppear)
-                    .navigationBarTitle(navigationBarTitle)
-                    .navigationBarItems(trailing:
-                        navigationBarItem
-                    )
-                TTProgressHUD($hudVisible, config: hudConfig)
-            }
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .sheet(item: environmentBinding.homeViewSheetState) { item in
-            switch item {
-            case .setting:
-                SettingView()
-                    .environmentObject(store)
-                    .accentColor(accentColor)
-                    .preferredColorScheme(colorScheme)
-                    .blur(radius: environment.blurRadius)
-                    .allowsHitTesting(environment.isAppUnlocked)
-            case .filter:
-                FilterView()
-                    .environmentObject(store)
-                    .accentColor(accentColor)
-                    .preferredColorScheme(colorScheme)
-                    .blur(radius: environment.blurRadius)
-                    .allowsHitTesting(environment.isAppUnlocked)
-            }
-        }
-        .onAppear(perform: onAppear)
-        .onReceive(
-            NotificationCenter.default.publisher(
-                for: UIApplication.didBecomeActiveNotification
-            )
-        ) { _ in
-            onBecomeActive()
-        }
-        .onChange(
-            of: environment.mangaItemReverseID,
-            perform: onJumpIDChange
-        )
-        .onChange(
-            of: environment.mangaItemReverseLoading,
-            perform: onFetchFinish
-        )
-    }
-
     func onAppear() {
         detectPasteboard()
+        fetchGreetingIfNeeded()
     }
     func onListAppear() {
         if settings.user == nil {
@@ -261,7 +256,10 @@ struct HomeView: View {
         fetchFrontpageItemsIfNeeded()
     }
     func onBecomeActive() {
-        detectPasteboard()
+        if vcsCount == 1 {
+            detectPasteboard()
+            fetchGreetingIfNeeded()
+        }
     }
     func onHomeListTypeChange(_ type: HomeListType) {
         switch type {
@@ -279,6 +277,14 @@ struct HomeView: View {
             print(type)
         case .history:
             print(type)
+        }
+    }
+    func onReceiveGreeting(_ greeting: Greeting?) {
+        if let greeting = greeting,
+           !greeting.gainedNothing
+        {
+            self.greeting = greeting
+            toggleNewDawn()
         }
     }
     func onFavoritesIndexChange(_ : Int) {
@@ -355,6 +361,9 @@ struct HomeView: View {
         }
     }
 
+    func fetchGreeting() {
+        store.dispatch(.fetchGreeting)
+    }
     func fetchUserInfo() {
         if let uid = settings.user?.apiuid, !uid.isEmpty {
             store.dispatch(.fetchUserInfo(uid: uid))
@@ -399,6 +408,34 @@ struct HomeView: View {
         store.dispatch(.replaceMangaCommentJumpID(gid: gid))
     }
 
+    func fetchGreetingIfNeeded() {
+        func verifyDate(with updateTime: Date?) -> Bool {
+            guard let updateTime = updateTime else { return false }
+
+            let currentTime = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd MMMM yyyy"
+            formatter.locale = Locale.current
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+            let currentTimeString = formatter.string(from: currentTime)
+            if let currDay = formatter.date(from: currentTimeString) {
+                return currentTime > currDay && updateTime < currDay
+            }
+
+            return false
+        }
+
+        if setting?.showNewDawnGreeting == true {
+            if let greeting = user?.greeting {
+                if verifyDate(with: greeting.updateTime) {
+                    fetchGreeting()
+                }
+            } else {
+                fetchGreeting()
+            }
+        }
+    }
     func fetchFrontpageItemsIfNeeded() {
         if homeInfo.frontpageItems?.isEmpty != false {
             fetchFrontpageItems()
@@ -419,30 +456,24 @@ struct HomeView: View {
             fetchFavoritesItems()
         }
     }
+
+    func toggleNewDawn() {
+        store.dispatch(.toggleHomeViewSheetState(state: .newDawn))
+    }
 }
 
 // MARK: GenericList
-private struct GenericList: View {
+private struct GenericList: View, StoreAccessor {
     @EnvironmentObject var store: Store
 
-    var homeInfo: AppState.HomeInfo {
-        store.appState.homeInfo
-    }
-    var homeInfoBinding: Binding<AppState.HomeInfo> {
-        $store.appState.homeInfo
-    }
-    var environment: AppState.Environment {
-        store.appState.environment
-    }
-
-    let items: [Manga]?
-    let loadingFlag: Bool
-    let notFoundFlag: Bool
-    let loadFailedFlag: Bool
-    let moreLoadingFlag: Bool
-    let moreLoadFailedFlag: Bool
-    let fetchAction: (() -> Void)?
-    let loadMoreAction: (() -> Void)?
+    private let items: [Manga]?
+    private let loadingFlag: Bool
+    private let notFoundFlag: Bool
+    private let loadFailedFlag: Bool
+    private let moreLoadingFlag: Bool
+    private let moreLoadFailedFlag: Bool
+    private let fetchAction: (() -> Void)?
+    private let loadMoreAction: (() -> Void)?
 
     init(
         items: [Manga]?,
@@ -521,6 +552,12 @@ private struct GenericList: View {
             }
         }
     }
+}
+
+private extension GenericList {
+    var homeInfoBinding: Binding<AppState.HomeInfo> {
+        $store.appState.homeInfo
+    }
 
     func onUpdate() {
         if let action = fetchAction {
@@ -561,9 +598,19 @@ private struct GenericList: View {
 
 // MARK: SearchBar
 private struct SearchBar: View {
-    @Binding var keyword: String
-    var commitAction: () -> Void
-    var filterAction: () -> Void
+    @Binding private var keyword: String
+    private var commitAction: () -> Void
+    private var filterAction: () -> Void
+
+    init(
+        keyword: Binding<String>,
+        commitAction: @escaping () -> Void,
+        filterAction: @escaping () -> Void
+    ) {
+        _keyword = keyword
+        self.commitAction = commitAction
+        self.filterAction = filterAction
+    }
 
     var body: some View {
         HStack {
@@ -594,7 +641,7 @@ private struct SearchBar: View {
         .cornerRadius(8)
     }
 
-    func onClearButtonTap() {
+    private func onClearButtonTap() {
         keyword = ""
     }
 }
@@ -636,4 +683,5 @@ enum HomeViewSheetState: Identifiable {
 
     case setting
     case filter
+    case newDawn
 }

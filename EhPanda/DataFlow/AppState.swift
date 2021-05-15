@@ -21,6 +21,7 @@ struct AppState {
 extension AppState {
     // MARK: Environment
     struct Environment {
+        var isPreview = false
         var isAppUnlocked = true
         var blurRadius: CGFloat = 0
         var isSlideMenuClosed = true
@@ -43,6 +44,7 @@ extension AppState {
     struct Settings {
         var userInfoLoading = false
         var favoriteNamesLoading = false
+        var greetingLoading = false
 
         @FileStorage(directory: .cachesDirectory, fileName: "user.json")
         var user: User?
@@ -63,6 +65,20 @@ extension AppState {
             {
                 self.user?.currentGP = currentGP
                 self.user?.currentCredits = currentCredits
+            }
+        }
+
+        mutating func insertGreeting(greeting: Greeting) {
+            guard let currDate = greeting.updateTime
+            else { return }
+
+            if let prevGreeting = user?.greeting,
+               let prevDate = prevGreeting.updateTime,
+               prevDate < currDate
+            {
+                user?.greeting = greeting
+            } else if user?.greeting == nil {
+                user?.greeting = greeting
             }
         }
     }

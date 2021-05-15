@@ -159,7 +159,7 @@ extension View {
 }
 
 extension Bundle {
-    public var icon: UIImage? {
+    var icon: UIImage? {
         if let icons = infoDictionary?["CFBundleIcons"] as? [String: Any],
             let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
             let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
@@ -167,5 +167,18 @@ extension Bundle {
             return UIImage(named: lastIcon)
         }
         return nil
+    }
+}
+
+extension Int {
+    var withComma: String? {
+        let decimalFormatter = NumberFormatter()
+        decimalFormatter.numberStyle = .decimal
+        decimalFormatter.locale = Locale.current
+
+        let string = decimalFormatter.string(
+            from: self as NSNumber
+        )
+        return string
     }
 }

@@ -9,14 +9,104 @@ import SwiftUI
 import TTProgressHUD
 
 struct AccountSettingView: View {
-    @EnvironmentObject var store: Store
-    @State var inEditMode = false
+    @EnvironmentObject private var store: Store
+    @State private var inEditMode = false
 
-    @State var hudVisible = false
-    @State var hudConfig = TTProgressHUDConfig(
+    @State private var hudVisible = false
+    @State private var hudConfig = TTProgressHUDConfig(
         hapticsEnabled: false
     )
 
+    // MARK: AccountSettingView
+    var body: some View {
+        ZStack {
+            Form {
+                if let settingBinding = settingBinding {
+                    Section {
+//                        Picker(
+//                            selection: settingBinding.galleryType,
+//                            label: Text("Gallery"),
+//                            content: {
+//                                let galleryTypes: [GalleryType] = [.ehentai, .exhentai]
+//                                ForEach(galleryTypes, id: \.self) {
+//                                    Text($0.rawValue.localized())
+//                                }
+//                            })
+//                            .pickerStyle(SegmentedPickerStyle())
+                        if !didLogin {
+                            Button("Login", action: onLoginTap)
+                                .withArrow()
+                        } else {
+                            Button("Logout", action: onLogoutTap)
+                                .foregroundColor(.red)
+                        }
+                        if didLogin {
+                            Group {
+                                Button("Account configuration", action: onConfigTap)
+                                    .withArrow()
+                                Button("Manage tags subscription", action: onMyTagsTap)
+                                    .withArrow()
+                                Toggle(
+                                    "Show new dawn greeting",
+                                    isOn: settingBinding.showNewDawnGreeting
+                                )
+                            }
+                            .foregroundColor(.primary)
+                        }
+                    }
+                }
+                Section {
+                    CookieRow(
+                        inEditMode: $inEditMode,
+                        key: memberIDKey,
+                        value: ehMemberID,
+                        verifyView: verifyView(ehMemberID),
+                        editChangedAction: onEhMemberIDEditingChanged
+                    )
+                    CookieRow(
+                        inEditMode: $inEditMode,
+                        key: passHashKey,
+                        value: ehPassHash,
+                        verifyView: verifyView(ehPassHash),
+                        editChangedAction: onEhPassHashEditingChanged
+                    )
+                    Button("Copy cookies", action: copyEhCookies)
+                }
+//                Section(header: Text("ExHentai")) {
+//                    CookieRow(
+//                        inEditMode: $inEditMode,
+//                        key: igneousKey,
+//                        value: igneous,
+//                        verifyView: verifyView(igneous),
+//                        editChangedAction: onIgneousEditingChanged
+//                    )
+//                    CookieRow(
+//                        inEditMode: $inEditMode,
+//                        key: memberIDKey,
+//                        value: exMemberID,
+//                        verifyView: verifyView(exMemberID),
+//                        editChangedAction: onExMemberIDEditingChanged
+//                    )
+//                    CookieRow(
+//                        inEditMode: $inEditMode,
+//                        key: passHashKey,
+//                        value: exPassHash,
+//                        verifyView: verifyView(exPassHash),
+//                        editChangedAction: onExPassHashEditingChanged
+//                    )
+//                    Button("Copy cookies", action: copyExCookies)
+//                }
+            }
+            TTProgressHUD($hudVisible, config: hudConfig)
+        }
+        .navigationBarTitle("Account")
+        .navigationBarItems(trailing:
+            Button(inEditMode ? "Finish" : "Edit", action: onEditButtonTap)
+        )
+    }
+}
+
+private extension AccountSettingView {
     var settingBinding: Binding<Setting>? {
         Binding($store.appState.settings.setting)
     }
@@ -72,90 +162,6 @@ struct AccountSettingView: View {
                 verifiedView
             }
         }
-    }
-
-    // MARK: AccountSettingView
-    var body: some View {
-        ZStack {
-            Form {
-                if let _ = settingBinding {
-                    Section {
-//                        Picker(
-//                            selection: settingBinding.galleryType,
-//                            label: Text("Gallery"),
-//                            content: {
-//                                let galleryTypes: [GalleryType] = [.ehentai, .exhentai]
-//                                ForEach(galleryTypes, id: \.self) {
-//                                    Text($0.rawValue.localized())
-//                                }
-//                            })
-//                            .pickerStyle(SegmentedPickerStyle())
-                        if !didLogin {
-                            Button("Login", action: onLoginTap)
-                                .withArrow()
-                        } else {
-                            Button("Logout", action: onLogoutTap)
-                                .foregroundColor(.red)
-                        }
-                        if didLogin {
-                            Group {
-                                Button("Account configuration", action: onConfigTap)
-                                    .withArrow()
-                                Button("Manage tags subscription", action: onMyTagsTap)
-                                    .withArrow()
-                            }
-                            .foregroundColor(.primary)
-                        }
-                    }
-                }
-                Section {
-                    CookieRow(
-                        inEditMode: $inEditMode,
-                        key: memberIDKey,
-                        value: ehMemberID,
-                        verifyView: verifyView(ehMemberID),
-                        editChangedAction: onEhMemberIDEditingChanged
-                    )
-                    CookieRow(
-                        inEditMode: $inEditMode,
-                        key: passHashKey,
-                        value: ehPassHash,
-                        verifyView: verifyView(ehPassHash),
-                        editChangedAction: onEhPassHashEditingChanged
-                    )
-                    Button("Copy cookies", action: copyEhCookies)
-                }
-//                Section(header: Text("ExHentai")) {
-//                    CookieRow(
-//                        inEditMode: $inEditMode,
-//                        key: igneousKey,
-//                        value: igneous,
-//                        verifyView: verifyView(igneous),
-//                        editChangedAction: onIgneousEditingChanged
-//                    )
-//                    CookieRow(
-//                        inEditMode: $inEditMode,
-//                        key: memberIDKey,
-//                        value: exMemberID,
-//                        verifyView: verifyView(exMemberID),
-//                        editChangedAction: onExMemberIDEditingChanged
-//                    )
-//                    CookieRow(
-//                        inEditMode: $inEditMode,
-//                        key: passHashKey,
-//                        value: exPassHash,
-//                        verifyView: verifyView(exPassHash),
-//                        editChangedAction: onExPassHashEditingChanged
-//                    )
-//                    Button("Copy cookies", action: copyExCookies)
-//                }
-            }
-            TTProgressHUD($hudVisible, config: hudConfig)
-        }
-        .navigationBarTitle("Account")
-        .navigationBarItems(trailing:
-            Button(inEditMode ? "Finish" : "Edit", action: onEditButtonTap)
-        )
     }
 
     func onEditButtonTap() {
@@ -239,16 +245,16 @@ struct AccountSettingView: View {
 
 // MARK: CookieRow
 private struct CookieRow<VerifyView: View>: View {
-    var inEditModeBinding: Binding<Bool>
-    var inEditMode: Bool {
+    private var inEditModeBinding: Binding<Bool>
+    private var inEditMode: Bool {
         inEditModeBinding.wrappedValue
     }
-    @State var content: String
+    @State private var content: String
 
-    let key: String
-    let value: String
-    let verifyView: VerifyView
-    let editChangedAction: (String) -> Void
+    private let key: String
+    private let value: String
+    private let verifyView: VerifyView
+    private let editChangedAction: (String) -> Void
 
     init(
         inEditMode: Binding<Bool>,
@@ -290,13 +296,13 @@ private struct CookieRow<VerifyView: View>: View {
         }
     }
 
-    func onContentChanged(_ value: String) {
+    private func onContentChanged(_ value: String) {
         editChangedAction(value)
     }
 }
 
 // MARK: Definition
-public struct CookieValue {
+struct CookieValue {
     let rawValue: String
     let localizedString: String
 }

@@ -8,12 +8,23 @@
 import Foundation
 
 struct User: Codable {
+    static let empty = User(
+        displayName: "",
+        avatarURL: "",
+        apikey: "",
+        currentGP: "",
+        currentCredits: "",
+        favoriteNames: nil
+    )
+
     var displayName: String?
     var avatarURL: String?
     var apikey: String?
 
     var currentGP: String?
     var currentCredits: String?
+
+    var greeting: Greeting?
 
     var apiuid: String {
         getCookieValue(

@@ -13,6 +13,24 @@ protocol AppCommand {
     func execute(in store: Store)
 }
 
+struct FetchGreetingCommand: AppCommand {
+    func execute(in store: Store) {
+        let token = SubscriptionToken()
+        GreetingRequest()
+            .publisher
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.fetchGreetingDone(result: .failure(error)))
+                }
+                token.unseal()
+            } receiveValue: { greeting in
+                store.dispatch(.fetchGreetingDone(result: .success(greeting)))
+            }
+            .seal(in: token)
+    }
+}
+
 struct FetchUserInfoCommand: AppCommand {
     let uid: String
 
@@ -279,7 +297,7 @@ struct FetchMangaDetailCommand: AppCommand {
             } receiveValue: { detail in
                 store.dispatch(.fetchMangaDetailDone(result: .success((gid, detail.0, detail.1))))
                 if detail.0.previews.isEmpty == true {
-                    store.dispatch(.fetchAlterImages(gid: gid, doc: detail.2))
+                    store.dispatch(.fetchAlterImages(gid: gid))
                 }
             }
             .seal(in: token)
@@ -411,11 +429,11 @@ struct FetchMoreAssociatedItemsCommand: AppCommand {
 
 struct FetchAlterImagesCommand: AppCommand {
     let gid: String
-    let doc: HTMLDocument
+    let alterImagesURL: String
 
     func execute(in store: Store) {
         let token = SubscriptionToken()
-        AlterImagesRequest(doc: doc)
+        AlterImagesRequest(alterImagesURL: alterImagesURL)
             .publisher
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -707,7 +725,7 @@ struct VoteCommentCommand: AppCommand {
     }
 }
 
-class SubscriptionToken {
+final class SubscriptionToken {
     var cancellable: AnyCancellable?
     func unseal() { cancellable = nil }
 }
