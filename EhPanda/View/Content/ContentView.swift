@@ -404,7 +404,6 @@ private struct ImageContainer: View {
             )
             .onProgress(onWebImageProgress)
             .onSuccess(onWebImageSuccess)
-            .loadImmediately()
             .resizable()
             .scaledToFit()
 

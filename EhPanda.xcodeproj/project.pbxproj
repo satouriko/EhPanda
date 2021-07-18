@@ -20,6 +20,12 @@
 		AB47FDB425BC859E0007765D /* Weird-ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB47FDB125BC859E0007765D /* Weird-ipad@2x.png */; };
 		AB47FDB525BC859E0007765D /* Weird-ipad-pro@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB47FDB225BC859E0007765D /* Weird-ipad-pro@2x.png */; };
 		AB47FDB625BC859E0007765D /* Weird-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB47FDB325BC859E0007765D /* Weird-ipad.png */; };
+		AB6E284B26A4796B00F760EA /* DFStreamHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E284426A4796B00F760EA /* DFStreamHandler.swift */; };
+		AB6E284C26A4796B00F760EA /* DFRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E284526A4796B00F760EA /* DFRequest.swift */; };
+		AB6E284D26A4796B00F760EA /* DFURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E284626A4796B00F760EA /* DFURLProtocol.swift */; };
+		AB6E284F26A4796B00F760EA /* DFManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E284826A4796B00F760EA /* DFManager.swift */; };
+		AB6E285026A4796B00F760EA /* DomainResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E284926A4796B00F760EA /* DomainResolver.swift */; };
+		AB6E285126A4796B00F760EA /* DFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E284A26A4796B00F760EA /* DFExtensions.swift */; };
 		AB7E6B3025D24FE00035CC68 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB7E6B3225D24FE00035CC68 /* InfoPlist.strings */; };
 		AB84F47525CAF56D00DAF1EC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = AB84F47425CAF56D00DAF1EC /* Kingfisher */; };
 		ABA732D925A8018A00B3D9AB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA732D825A8018A00B3D9AB /* Extensions.swift */; };
@@ -33,12 +39,13 @@
 		ABC3C78F2593699B00E0C11B /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC3C7762593699A00E0C11B /* ViewModifiers.swift */; };
 		ABC3C7962593699B00E0C11B /* Manga.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC3C7802593699A00E0C11B /* Manga.swift */; };
 		ABC3C79D259369FE00E0C11B /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = ABC3C79C259369FE00E0C11B /* Kanna */; };
-		ABCD2F0A259763FC008E5A20 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD2F09259763FC008E5A20 /* Request.swift */; };
+		ABCB253426A47A7F003F9E52 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCB253326A47A7F003F9E52 /* Setting.swift */; };
+		ABCB253626A47B1E003F9E52 /* LaboratorySettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCB253526A47B1E003F9E52 /* LaboratorySettingView.swift */; };
+		ABCB253A26A47DBC003F9E52 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCB253926A47DBC003F9E52 /* Request.swift */; };
 		ABCD2F0E25976B95008E5A20 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD2F0D25976B95008E5A20 /* Parser.swift */; };
 		ABD5FDD4263D05110021A4C6 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = ABD5FDD3263D05110021A4C6 /* .swiftlint.yml */; };
 		ABD5FDD7263D86AA0021A4C6 /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = ABD5FDD6263D86AA0021A4C6 /* TTProgressHUD */; };
 		ABE0FA2F25D4CAEC00E52F18 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = ABE0FA2E25D4CAEC00E52F18 /* SDWebImageSwiftUI */; };
-		ABEA1FE625A9B40B002966B9 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABEA1FE525A9B40B002966B9 /* Setting.swift */; };
 		ABEE0AFA2595C6F800C997AE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ABEE0AFC2595C6F800C997AE /* Localizable.strings */; };
 		ABF313A525B1AB6600D47A2F /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF313A425B1AB6600D47A2F /* Misc.swift */; };
 		ABF45AB925F3312F00ECB568 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF45AB425F3312F00ECB568 /* AppState.swift */; };
@@ -89,6 +96,12 @@
 		AB47FDB125BC859E0007765D /* Weird-ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Weird-ipad@2x.png"; sourceTree = "<group>"; };
 		AB47FDB225BC859E0007765D /* Weird-ipad-pro@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Weird-ipad-pro@2x.png"; sourceTree = "<group>"; };
 		AB47FDB325BC859E0007765D /* Weird-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Weird-ipad.png"; sourceTree = "<group>"; };
+		AB6E284426A4796B00F760EA /* DFStreamHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFStreamHandler.swift; sourceTree = "<group>"; };
+		AB6E284526A4796B00F760EA /* DFRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFRequest.swift; sourceTree = "<group>"; };
+		AB6E284626A4796B00F760EA /* DFURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFURLProtocol.swift; sourceTree = "<group>"; };
+		AB6E284826A4796B00F760EA /* DFManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFManager.swift; sourceTree = "<group>"; };
+		AB6E284926A4796B00F760EA /* DomainResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainResolver.swift; sourceTree = "<group>"; };
+		AB6E284A26A4796B00F760EA /* DFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFExtensions.swift; sourceTree = "<group>"; };
 		AB7E6B3125D24FE00035CC68 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AB7E6B3425D24FE40035CC68 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		AB7E6B3525D24FE50035CC68 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -107,12 +120,13 @@
 		ABC3C76E2593699A00E0C11B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABC3C7762593699A00E0C11B /* ViewModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		ABC3C7802593699A00E0C11B /* Manga.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manga.swift; sourceTree = "<group>"; };
-		ABCD2F09259763FC008E5A20 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		ABCB253326A47A7F003F9E52 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		ABCB253526A47B1E003F9E52 /* LaboratorySettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaboratorySettingView.swift; sourceTree = "<group>"; };
+		ABCB253926A47DBC003F9E52 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		ABCD2F0D25976B95008E5A20 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		ABD5FDD3263D05110021A4C6 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		ABE9376C265DCD9400EA8B30 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		ABE9376D265DCD9400EA8B30 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		ABEA1FE525A9B40B002966B9 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		ABEE0AFB2595C6F800C997AE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ABEE0AFE2595C73D00C997AE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		ABF313A425B1AB6600D47A2F /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
@@ -245,7 +259,13 @@
 		ABC3C77B2593699A00E0C11B /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				ABCD2F09259763FC008E5A20 /* Request.swift */,
+				ABCB253926A47DBC003F9E52 /* Request.swift */,
+				AB6E284A26A4796B00F760EA /* DFExtensions.swift */,
+				AB6E284826A4796B00F760EA /* DFManager.swift */,
+				AB6E284526A4796B00F760EA /* DFRequest.swift */,
+				AB6E284426A4796B00F760EA /* DFStreamHandler.swift */,
+				AB6E284626A4796B00F760EA /* DFURLProtocol.swift */,
+				AB6E284926A4796B00F760EA /* DomainResolver.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -256,7 +276,7 @@
 				ABF75F3E25A19CD200544D29 /* User.swift */,
 				ABA732DE25A852D800B3D9AB /* Filter.swift */,
 				ABC3C7802593699A00E0C11B /* Manga.swift */,
-				ABEA1FE525A9B40B002966B9 /* Setting.swift */,
+				ABCB253326A47A7F003F9E52 /* Setting.swift */,
 				ABF313A425B1AB6600D47A2F /* Misc.swift */,
 			);
 			path = Models;
@@ -343,6 +363,7 @@
 				ABF45AD825F3313D00ECB568 /* GeneralSettingView.swift */,
 				ABF45ADC25F3313D00ECB568 /* AppearanceSettingView.swift */,
 				ABF45ADB25F3313D00ECB568 /* ReadingSettingView.swift */,
+				ABCB253526A47B1E003F9E52 /* LaboratorySettingView.swift */,
 				ABF45ADE25F3313D00ECB568 /* EhPandaView.swift */,
 				ABF45ADA25F3313D00ECB568 /* WebView.swift */,
 			);
@@ -472,11 +493,11 @@
 				AB40CFDC25983EC200D1DC9A /* FileStorage.swift in Sources */,
 				ABF45ABD25F3312F00ECB568 /* Store.swift in Sources */,
 				ABF45AED25F3313D00ECB568 /* DetailView.swift in Sources */,
-				ABCD2F0A259763FC008E5A20 /* Request.swift in Sources */,
 				ABF45AE925F3313D00ECB568 /* AlertView.swift in Sources */,
 				ABF45ABB25F3312F00ECB568 /* AppError.swift in Sources */,
 				ABF45AE025F3313D00ECB568 /* HomeView.swift in Sources */,
 				ABF45AEF25F3313D00ECB568 /* TorrentsView.swift in Sources */,
+				AB6E284D26A4796B00F760EA /* DFURLProtocol.swift in Sources */,
 				ABF45AB925F3312F00ECB568 /* AppState.swift in Sources */,
 				ABF45AF625F3313D00ECB568 /* AppearanceSettingView.swift in Sources */,
 				ABF45AEB25F3313D00ECB568 /* MangaSummaryRow.swift in Sources */,
@@ -487,9 +508,11 @@
 				ABC3C78F2593699B00E0C11B /* ViewModifiers.swift in Sources */,
 				ABF45AF825F3313D00ECB568 /* EhPandaView.swift in Sources */,
 				ABC3C7862593699B00E0C11B /* Utility.swift in Sources */,
+				AB6E285126A4796B00F760EA /* DFExtensions.swift in Sources */,
 				ABF45AE725F3313D00ECB568 /* RatingView.swift in Sources */,
 				ABCD2F0E25976B95008E5A20 /* Parser.swift in Sources */,
 				ABF45AF725F3313D00ECB568 /* SettingView.swift in Sources */,
+				ABCB253626A47B1E003F9E52 /* LaboratorySettingView.swift in Sources */,
 				ABF45AEA25F3313D00ECB568 /* Placeholder.swift in Sources */,
 				ABF45AE125F3313D00ECB568 /* Home.swift in Sources */,
 				ABF45AF025F3313D00ECB568 /* CommentView.swift in Sources */,
@@ -497,21 +520,26 @@
 				ABF45AE225F3313D00ECB568 /* AuthView.swift in Sources */,
 				ABF45ABC25F3312F00ECB568 /* AppAction.swift in Sources */,
 				ABF45AF525F3313D00ECB568 /* ReadingSettingView.swift in Sources */,
+				AB6E284F26A4796B00F760EA /* DFManager.swift in Sources */,
 				AB38A0CB25CA993D00764D64 /* ColorCodable.swift in Sources */,
 				ABF45AF425F3313D00ECB568 /* WebView.swift in Sources */,
+				AB6E285026A4796B00F760EA /* DomainResolver.swift in Sources */,
 				ABF45AF225F3313D00ECB568 /* GeneralSettingView.swift in Sources */,
+				ABCB253A26A47DBC003F9E52 /* Request.swift in Sources */,
 				ABF45ABA25F3312F00ECB568 /* AppCommand.swift in Sources */,
 				ABF45AE425F3313D00ECB568 /* TagCloudView.swift in Sources */,
 				ABF45AEE25F3313D00ECB568 /* ArchiveView.swift in Sources */,
 				ABF45AEC25F3313D00ECB568 /* ContentView.swift in Sources */,
-				ABEA1FE625A9B40B002966B9 /* Setting.swift in Sources */,
+				AB6E284C26A4796B00F760EA /* DFRequest.swift in Sources */,
 				ABC3C7962593699B00E0C11B /* Manga.swift in Sources */,
 				ABC3C7872593699B00E0C11B /* EhPandaApp.swift in Sources */,
+				ABCB253426A47A7F003F9E52 /* Setting.swift in Sources */,
 				ABF45AE625F3313D00ECB568 /* KRefreshScrollView.swift in Sources */,
 				ABF313A525B1AB6600D47A2F /* Misc.swift in Sources */,
 				ABA732DF25A852D800B3D9AB /* Filter.swift in Sources */,
 				ABC1FAB82642C37D00A9F352 /* NewDawnView.swift in Sources */,
 				ABF45AE825F3313D00ECB568 /* LinkedText.swift in Sources */,
+				AB6E284B26A4796B00F760EA /* DFStreamHandler.swift in Sources */,
 				ABF45AE525F3313D00ECB568 /* Comment.swift in Sources */,
 				ABC1FAB6264152C800A9F352 /* StoreAccessor.swift in Sources */,
 				ABF75F3F25A19CD200544D29 /* User.swift in Sources */,
@@ -750,8 +778,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.3.0;
+				branch = "fix/xcode-13";
+				kind = branch;
 			};
 		};
 		ABC3C79B259369FE00E0C11B /* XCRemoteSwiftPackageReference "Kanna" */ = {

@@ -62,6 +62,9 @@ struct Setting: Codable {
             }
         }
     }
+
+    // Laboratory
+    var bypassSNIFiltering = false
 }
 
 enum GalleryType: String, Codable {

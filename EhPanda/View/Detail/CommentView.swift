@@ -346,7 +346,6 @@ private extension CommentCell {
                        let secondLink = secondLink
                     {
                         KFImage(URL(string: imgURL))
-                            .loadImmediately()
                             .resizable()
                             .scaledToFit()
                             .frame(width: screenW / 4)
@@ -354,7 +353,6 @@ private extension CommentCell {
                                 linkAction(link.safeURL())
                             }
                         KFImage(URL(string: secondImgURL))
-                            .loadImmediately()
                             .resizable()
                             .scaledToFit()
                             .frame(width: screenW / 4)
@@ -363,12 +361,10 @@ private extension CommentCell {
                             }
                     } else {
                         KFImage(URL(string: imgURL))
-                            .loadImmediately()
                             .resizable()
                             .scaledToFit()
                             .frame(width: screenW / 4)
                         KFImage(URL(string: secondImgURL))
-                            .loadImmediately()
                             .resizable()
                             .scaledToFit()
                             .frame(width: screenW / 4)
@@ -379,7 +375,6 @@ private extension CommentCell {
             else if let imgURL = imgURL {
                 if let link = link {
                     KFImage(URL(string: imgURL))
-                        .loadImmediately()
                         .resizable()
                         .scaledToFit()
                         .frame(width: screenW / 2)
@@ -388,7 +383,6 @@ private extension CommentCell {
                         }
                 } else {
                     KFImage(URL(string: imgURL))
-                        .loadImmediately()
                         .resizable()
                         .scaledToFit()
                         .frame(width: screenW / 2)

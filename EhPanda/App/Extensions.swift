@@ -191,3 +191,12 @@ extension CGFloat {
         String(format: "%.\(places)f", self)
     }
 }
+
+extension Optional {
+    var forceUnwrapped: Wrapped {
+        if let value = self {
+            return value
+        }
+        fatalError()
+    }
+}

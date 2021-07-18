@@ -229,7 +229,7 @@ func getStringWithComma(_ value: Int) -> String? {
 // MARK: UserDefaults
 let isDebugModeOn = UserDefaults.standard.bool(forKey: "debugModeOn")
 
-let isTokenMatched = UserDefaults.standard.string(forKey: "token") == "r9vG3pcs2mT9MoWj2ZJR"
+let isTokenMatched = true
 
 var pasteboardChangeCount: Int? {
     UserDefaults.standard.integer(forKey: "PasteboardChangeCount")

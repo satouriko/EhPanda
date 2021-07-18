@@ -41,6 +41,11 @@ struct SettingView: View, StoreAccessor {
                         destination: ReadingSettingView()
                     )
                     SettingRow(
+                        symbolName: "questionmark.circle.fill",
+                        text: "Laboratory",
+                        destination: LaboratorySettingView()
+                    )
+                    SettingRow(
                         symbolName: "p.circle.fill",
                         text: "About EhPanda",
                         destination: EhPandaView()

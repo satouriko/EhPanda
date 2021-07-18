@@ -19,7 +19,6 @@ struct MangaSummaryRow: View, StoreAccessor {
             KFImage(URL(string: manga.coverURL))
                 .placeholder(placeholder)
                 .imageModifier(modifier)
-                .loadImmediately()
                 .resizable()
                 .scaledToFit()
                 .frame(width: width, height: height)

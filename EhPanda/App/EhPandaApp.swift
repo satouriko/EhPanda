@@ -13,17 +13,13 @@ import SDWebImageSwiftUI
 struct EhPandaApp: App {
     @StateObject private var store = Store()
 
-    init() {
-        configureWebImage()
-        clearImageCachesIfNeeded()
-    }
-
     var body: some Scene {
         WindowGroup {
             Home()
                 .environmentObject(store)
                 .accentColor(accentColor)
                 .onOpenURL(perform: onOpenURL)
+                .onAppear(perform: onStartTasks)
                 .preferredColorScheme(preferredColorScheme)
         }
     }
@@ -40,6 +36,11 @@ private extension EhPandaApp {
         setting?.colorScheme ?? .none
     }
 
+    func onStartTasks() {
+        configureWebImage()
+        configureDomainFronting()
+        clearImageCachesIfNeeded()
+    }
     func onOpenURL(_ url: URL) {
         switch url.host {
         case "token":
@@ -51,8 +52,15 @@ private extension EhPandaApp {
         }
     }
 
+    func configureDomainFronting() {
+        DFManager.shared.dfState = setting?.bypassSNIFiltering
+            == true ? .activated : .notActivated
+    }
     func configureWebImage() {
         let config = KingfisherManager.shared.downloader.sessionConfiguration
+        if setting?.bypassSNIFiltering == true {
+            config.protocolClasses = [DFURLProtocol.self]
+        }
         config.httpCookieStorage = HTTPCookieStorage.shared
         KingfisherManager.shared.downloader.sessionConfiguration = config
     }

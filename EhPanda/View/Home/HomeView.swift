@@ -512,10 +512,7 @@ private struct GenericList: View, StoreAccessor {
                 .padding(.horizontal)
                 .padding(.bottom, 10)
             }
-            if !didLogin && isTokenMatched {
-                NotLoginView(loginAction: toggleSetting)
-                    .padding(.top, 30)
-            } else if loadingFlag {
+            if loadingFlag {
                 LoadingView()
                     .padding(.top, 30)
             } else if loadFailedFlag {

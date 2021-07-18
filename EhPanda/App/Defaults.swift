@@ -51,11 +51,7 @@ struct Defaults {
     struct URL {
         // Domains
         static var host: String {
-            if isTokenMatched {
-                return galleryType == .ehentai ? ehentai : exhentai
-            } else {
-                return durarara
-            }
+            galleryType == .ehentai ? ehentai : exhentai
         }
         static let ehentai = "https://e-hentai.org/"
         static let exhentai = "https://exhentai.org/"
@@ -147,11 +143,7 @@ extension Defaults.URL {
         )
     }
     static func frontpageList() -> String {
-        if isTokenMatched {
-            return merge([host, listCompact])
-        } else {
-            return durarara
-        }
+        merge([host, listCompact])
     }
     static func moreFrontpageList(pageNum: String, lastID: String) -> String {
         merge([host, listCompact, page + pageNum, from + lastID])
