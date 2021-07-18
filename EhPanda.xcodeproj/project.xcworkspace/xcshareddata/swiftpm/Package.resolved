@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/tid-kijyun/Kanna.git",
         "state": {
           "branch": null,
-          "revision": "c657fb9f5827ef138068215c76ad0bb62bbc92da",
-          "version": "5.2.4"
+          "revision": "126bdc9600e30b4a8aeb8d14088953c16aebf495",
+          "version": "5.2.6"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
         "state": {
           "branch": null,
-          "revision": "a6b6e44eadf0d39250c10a7cc0e3b91d0bdb0e94",
-          "version": "5.10.4"
+          "revision": "76dd4b49110b8624317fc128e7fa0d8a252018bc",
+          "version": "5.11.1"
         }
       },
       {
@@ -38,7 +38,7 @@
         }
       },
       {
-        "package": "SwiftUIVisualEffects",
+        "package": "swiftui-visual-effects",
         "repositoryURL": "https://github.com/lucasbrown/swiftui-visual-effects.git",
         "state": {
           "branch": null,
@@ -50,8 +50,8 @@
         "package": "TTProgressHUD",
         "repositoryURL": "https://github.com/tatsuz0u/TTProgressHUD",
         "state": {
-          "branch": "master",
-          "revision": "c45070fbaad3817357e336a85ea15c47588e2b8c",
+          "branch": null,
+          "revision": "9e2b01a7b1fdda2b4b0a65f03a56f24c0542c6bb",
           "version": null
         }
       }
