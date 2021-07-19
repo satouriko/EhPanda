@@ -119,7 +119,6 @@ extension Defaults.URL {
     static func searchList(keyword: String, filter: Filter) -> String {
         merge([
             host,
-            listCompact,
             fSearch + keyword.URLString()
         ]
         + applyFilters(filter)
@@ -134,7 +133,6 @@ extension Defaults.URL {
         merge(
             [
                 host,
-                listCompact,
                 fSearch + keyword.URLString(),
                 page + pageNum,
                 from + lastID
@@ -146,24 +144,24 @@ extension Defaults.URL {
         merge([host, listCompact])
     }
     static func moreFrontpageList(pageNum: String, lastID: String) -> String {
-        merge([host, listCompact, page + pageNum, from + lastID])
+        merge([host, page + pageNum, from + lastID])
     }
     static func popularList() -> String {
         if isTokenMatched {
-            return merge([host + popular, listCompact])
+            return host + popular
         } else {
-            return merge([ehentai, listCompact, nonh, fSearch + "parody:gintama$"])
+            return merge([ehentai, nonh, fSearch + "parody:gintama$"])
         }
     }
     static func watchedList() -> String {
-        merge([host + watched, listCompact])
+        host + watched
     }
     static func moreWatchedList(pageNum: String, lastID: String) -> String {
         merge([host + watched, page + pageNum, from + lastID])
     }
     static func favoritesList(favIndex: Int) -> String {
         if favIndex == -1 {
-            return merge([host + favorites, listCompact])
+            return host + favorites
         } else {
             return merge([host + favorites, favcat + "\(favIndex)", listCompact])
         }
@@ -176,7 +174,7 @@ extension Defaults.URL {
         }
     }
     static func mangaDetail(url: String) -> String {
-        merge([url, ignoreOffensive, showComments, detailLarge])
+        merge([url, showComments])
     }
     static func mangaTorrents(gid: String, token: String) -> String {
         merge([host + gallerytorrents, Defaults.URL.gid + gid, Defaults.URL.token + token])
@@ -192,7 +190,7 @@ extension Defaults.URL {
         merge(keyword: keyword, pageNum: nil, lastID: nil)
     }
     static func similarGallery(keyword: String) -> String {
-        merge([host, listCompact, fSearch + keyword.URLString()])
+        merge([host, fSearch + keyword.URLString()])
     }
     static func moreAssociatedItemsRedir(keyword: AssociatedKeyword, lastID: String, pageNum: String) -> String {
         if let title = keyword.title {
@@ -210,7 +208,6 @@ extension Defaults.URL {
     static func moreSimilarGallery(keyword: String, pageNum: String, lastID: String) -> String {
         merge([
                 host,
-                listCompact,
                 fSearch + keyword.URLString(),
                 page + pageNum,
                 from + lastID

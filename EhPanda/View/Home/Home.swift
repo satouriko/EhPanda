@@ -94,6 +94,13 @@ struct Home: View, StoreAccessor {
         ) { _ in
             onReceiveSlideMenuShouldCloseNotification()
         }
+        .onReceive(
+            NotificationCenter.default.publisher(
+                for: NSNotification.Name("BypassSNIFilteringDidChange")
+            )
+        ) { _ in
+            toggleDomainFronting()
+        }
     }
 }
 
@@ -127,6 +134,15 @@ private extension Home {
     }
     func onReceiveSlideMenuShouldCloseNotification() {
         performTransition(-width)
+    }
+    func toggleDomainFronting() {
+        if setting?.bypassSNIFiltering == true {
+            URLProtocol.registerClass(DFURLProtocol.self)
+            URLProtocol.registerWebview(scheme: "https")
+        } else {
+            URLProtocol.unregisterClass(DFURLProtocol.self)
+            URLProtocol.unregisterWebview(scheme: "https")
+        }
     }
 
     func performTransition(_ offset: CGFloat) {

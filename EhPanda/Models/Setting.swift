@@ -64,7 +64,11 @@ struct Setting: Codable {
     }
 
     // Laboratory
-    var bypassSNIFiltering = false
+    var bypassSNIFiltering = false {
+        didSet {
+            postBypassSNIFilteringDidChangeNotification()
+        }
+    }
 }
 
 enum GalleryType: String, Codable {

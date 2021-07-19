@@ -39,6 +39,7 @@ private extension EhPandaApp {
     func onStartTasks() {
         configureWebImage()
         configureDomainFronting()
+        configureIgnoreOffensive()
         clearImageCachesIfNeeded()
     }
     func onOpenURL(_ url: URL) {
@@ -53,14 +54,17 @@ private extension EhPandaApp {
     }
 
     func configureDomainFronting() {
-        DFManager.shared.dfState = setting?.bypassSNIFiltering
-            == true ? .activated : .notActivated
+        if setting?.bypassSNIFiltering == true {
+            URLProtocol.registerClass(DFURLProtocol.self)
+            URLProtocol.registerWebview(scheme: "https")
+        }
+    }
+    func configureIgnoreOffensive() {
+        setCookie(url: Defaults.URL.ehentai.safeURL(), key: "nw", value: "1")
+        setCookie(url: Defaults.URL.exhentai.safeURL(), key: "nw", value: "1")
     }
     func configureWebImage() {
         let config = KingfisherManager.shared.downloader.sessionConfiguration
-        if setting?.bypassSNIFiltering == true {
-            config.protocolClasses = [DFURLProtocol.self]
-        }
         config.httpCookieStorage = HTTPCookieStorage.shared
         KingfisherManager.shared.downloader.sessionConfiguration = config
     }
