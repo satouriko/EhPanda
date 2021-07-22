@@ -406,8 +406,8 @@ struct Parser {
         copyHTMLIfNeeded(doc.toHTML)
         var imageDetailURLs = [(Int, URL)]()
 
-        let className = isTokenMatched ? "gdtl" : "gdtm"
-        guard let gdtNode = doc.at_xpath("//div [@id='gdt']")
+        guard let className = try? parsePreviewMode(doc: doc),
+              let gdtNode = doc.at_xpath("//div [@id='gdt']")
         else { throw AppError.parseFailed }
 
         for (index, element) in gdtNode.xpath("//div [@class='\(className)']").enumerated() {
@@ -420,6 +420,17 @@ struct Parser {
         }
 
         return imageDetailURLs
+    }
+
+    static func parsePreviewMode(doc: HTMLDocument) throws -> String {
+        guard let gdoNode = doc.at_xpath("//div [@id='gdo']"),
+              let gdo4Node = gdoNode.at_xpath("//div [@id='gdo4']")
+        else { return "gdtm" }
+
+        for link in gdo4Node.xpath("//div") where link.text == "Large" {
+            return link["class"] == "ths nosel" ? "gdtl" : "gdtm"
+        }
+        return "gdtm"
     }
 
     static func parseMangaContent(doc: HTMLDocument, tag: Int) throws -> MangaContent {

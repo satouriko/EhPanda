@@ -214,7 +214,7 @@ extension Defaults.URL {
         ])
     }
     static func mangaContents(detailURL: String) -> String {
-        merge([detailURL, detailLarge, rowsLimit])
+        merge([detailURL, rowsLimit])
     }
 
     // Account Associated Operations
