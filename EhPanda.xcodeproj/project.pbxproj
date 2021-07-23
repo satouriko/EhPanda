@@ -83,6 +83,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB253B4926AB0FB800F95275 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AB253B4A26AB0FB800F95275 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AB38A0CA25CA993D00764D64 /* ColorCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCodable.swift; sourceTree = "<group>"; };
 		AB40CFDB25983EC200D1DC9A /* FileStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileStorage.swift; sourceTree = "<group>"; };
 		AB40CFDE25983EDF00D1DC9A /* FileHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 				"zh-Hans",
 				"zh-Hant",
 				ko,
+				de,
 			);
 			mainGroup = ABC3C74B2593696C00E0C11B;
 			packageReferences = (
@@ -557,6 +560,7 @@
 				AB7E6B3525D24FE50035CC68 /* en */,
 				ABE9376D265DCD9400EA8B30 /* zh-Hant */,
 				ABB5013126A41EBA00B542D9 /* ko */,
+				AB253B4A26AB0FB800F95275 /* de */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -569,6 +573,7 @@
 				AB994DBB25986F7A00E9A367 /* ja */,
 				ABE9376C265DCD9400EA8B30 /* zh-Hant */,
 				ABB5013026A41EBA00B542D9 /* ko */,
+				AB253B4926AB0FB800F95275 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

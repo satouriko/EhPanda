@@ -142,5 +142,6 @@ struct GenericRetryView: View {
                 )
             }
         }
+        .frame(maxWidth: (windowW ?? screenW) * 0.8)
     }
 }

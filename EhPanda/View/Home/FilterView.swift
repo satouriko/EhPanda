@@ -177,6 +177,7 @@ private struct CategoryCell: View {
                 .fontWeight(.bold)
                 .foregroundColor(.white)
                 .padding(.vertical, 5)
+                .lineLimit(1)
         }
         .onTapGesture(perform: onTapGesture)
         .cornerRadius(5)
