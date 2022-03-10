@@ -34,7 +34,7 @@ jobs:
       - name: Install certificates
         run: |
           KEY_CHAIN=action-builds.keychain-db
-          P12_PASSWORD=${{ secrets.P12_PASSWORD }}
+          P12_PASSWORD="${{ secrets.P12_PASSWORD }}"
           security create-keychain -p $P12_PASSWORD $KEY_CHAIN
           security default-keychain -s $KEY_CHAIN
           security unlock-keychain -p $P12_PASSWORD $KEY_CHAIN
