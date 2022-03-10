@@ -1893,7 +1893,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.ehpanda.shareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cool2645.ehpanda.shareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = ShareExtension_Dev;
 				SKIP_INSTALL = YES;
@@ -1920,7 +1920,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.ehpanda.shareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cool2645.ehpanda.shareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = ShareExtension_Dev;
 				SKIP_INSTALL = YES;
@@ -2061,7 +2061,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 136;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 9SKQ7QTZ74;
+				DEVELOPMENT_TEAM = 872762N56U;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = EhPanda/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -2070,7 +2070,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = app.ehpanda;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cool2645.ehpanda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = App_Dev;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2090,7 +2090,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 136;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 9SKQ7QTZ74;
+				DEVELOPMENT_TEAM = 872762N56U;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = EhPanda/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -2099,7 +2099,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = app.ehpanda;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cool2645.ehpanda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = App_Dev;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
