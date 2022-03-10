@@ -11,9 +11,9 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.cool2645.ehpanda</key>
-		<string>efa61f6f-89fd-40c5-aaa7-6a695c703918</string>
+		<string>b20a1956-adb2-4bb9-9075-f162561dede3</string>
 		<key>com.cool2645.ehpanda.shareExtension</key>
-		<string>e5fa8c10-ef05-439f-bd81-4554285688e1</string>
+		<string>b4e47db2-160c-432d-b8dc-19c99fd284b8</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>
